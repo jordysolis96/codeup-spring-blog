@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<h4>What side do you think the dice will land on?</h4>
+
+<div th:each="side : ${list}">
+    <form th:action="@{/roll-dice/{side}(side=${side})}" method="post">
+        <button type="submit" th:text="${side}"></button>
+    </form>
+
+</div>
+<div th:if="${guess} != null">
+    You guessed <span th:text="${guess}"></span> and the dice landed on <span th:text="${roll}"></span>!
+
+    <div th:if="${roll == guess}">
+        <span>You hit the jackpot!</span>
+    </div>
+    <div th:if="${roll != guess}">
+        <span>Looks like you lost this time.</span>
+    </div>
+
+    <form th:action="@{/roll-dice}" method="get">
+        <button type="submit">Wanna go for another roll?</button>
+    </form>
+
+
+</div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.spring.springblog.controllers;
 
 import com.spring.springblog.model.Post;
+import com.spring.springblog.repositiories.PostRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,22 +12,28 @@ import java.util.List;
 @Controller
 public class PostController {
 
-    @RequestMapping(path = "/posts", method = RequestMethod.GET)
+    private final PostRepository postDao;
+
+    public PostController(PostRepository postDao) {
+        this.postDao = postDao;
+    }
+
+
+
+    @RequestMapping(path = "/posts")
     public String postIndex(Model model){
-        Post post1 = new Post("First post", "this is my first post", 1);
-        Post post2 = new Post("Another post", "this is some other post", 2);
-        List<Post> postList = new ArrayList<>();
-        postList.add(post1);
-        postList.add(post2);
-        model.addAttribute("title", "All Posts");
-        model.addAttribute("posts", postList);
+
+        List<Post> postList = postDao.findAll();
+
+       model.addAttribute("title", "All Posts");
+       model.addAttribute("posts", postList);
+
         return "posts/index";
     }
 
     @RequestMapping(path = "/posts/{id}", method = RequestMethod.GET)
-    public String postView(Model model){
-        Post post = new Post("Individual post", "This is a individual post", 1);
-        model.addAttribute("title", "Single Posts");
+    public String postView(Model model, @PathVariable long id){
+        Post post = postDao.getOne(id);
         model.addAttribute("post", post);
         return "posts/show";
     }
@@ -42,5 +49,29 @@ public class PostController {
     @ResponseBody
     public String CreatePost() {
         return "create a new post";
+    }
+
+    @GetMapping("/posts/{id}/edit")
+    public String viewEditPostForm(@PathVariable long id, Model model) {
+        model.addAttribute("post", postDao.getOne(id));
+        return "posts/edit";
+    }
+
+    @PostMapping("/posts/{id}/edit")
+    public String updatePost(@PathVariable long id, @RequestParam String title, @RequestParam String body) {
+        Post post = new Post(
+                body,
+                title,
+                id
+        );
+        postDao.save(post);
+        return "redirect:/posts";
+    }
+
+    @PostMapping("/posts/{id}/delete")
+    public String deletePost(@PathVariable long id){
+        System.out.println("Deleting post...");
+        postDao.deleteById(id);
+        return "redirect:/posts";
     }
 }

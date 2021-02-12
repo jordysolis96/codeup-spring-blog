@@ -1,9 +1,21 @@
 package com.spring.springblog.model;
 
+
+import javax.persistence.*;
+
+@Entity
+@Table(name="posts")
 public class Post {
-    private String title;
-    private String body;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "INT(11) UNSIGNED")
     private long id;
+
+    @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String body;
 
     public Post(){}
 

@@ -5,8 +5,9 @@
 <nav th:replace="partials/navbar :: navbar"></nav>
 <h1>Here are all the posts!</h1>
 <div th:each="post : ${posts}">
-    <h5 th:text="${post.title}"></h5>
+    <h5 th:text="${post.title}" th:href="@{|/posts${post.id}|}"></h5>
     <p th:text="${post.body}"></p>
+    <a href="edit.html">edit</a>
 </div>
 <div th:replace="partials/scripts :: assets"></div>
 </body>

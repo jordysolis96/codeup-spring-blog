@@ -17,6 +17,17 @@ public class Post {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String body;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @ManyToOne
+    private User user;
+
     public Post(){}
 
     public Post(String title, String body, long id){
@@ -48,4 +59,6 @@ public class Post {
     public void setId(long id) {
         this.id = id;
     }
+
+
 }

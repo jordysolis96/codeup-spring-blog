@@ -3,12 +3,16 @@
 <head th:replace="partials/head :: header-links"></head>
 <body>
 <nav th:replace="partials/navbar :: navbar"></nav>
+
+<!-- This is where we iterate through the Posts ArrayList -->
 <h1>Here are all the posts!</h1>
+
 <div th:each="post : ${posts}">
-    <h5 th:text="${post.title}" th:href="@{|/posts${post.id}|}"></h5>
+    <a th:text="${post.title}" th:href="@{|/posts/${post.id}|}"></a>
     <p th:text="${post.body}"></p>
-    <a href="edit.html">edit</a>
 </div>
+
+
 <div th:replace="partials/scripts :: assets"></div>
 </body>
 </html>

@@ -67,12 +67,6 @@ public class PostController {
 
         model.addAttribute("post", new Post());
 
-        Post savedPost = postsDao.save(post);
-        String subject = "New Ad Created";
-        String body = "Dear " + savedPost.getUser().getUsername() + ". Thank you for creating an Ad. Your ad is: " + savedPost.getId();
-
-        emailService.prepareAndSend(savedPost, subject, body);
-
         return "posts/create";
     }
 
@@ -82,13 +76,11 @@ public class PostController {
         User user = userDao.findAll().get(0);
         post.setUser(user);
 
-//        Post savedPost = postsDao.save(post);
-//        String subject = "New Ad Created";
-//        String body = "Dear " + savedPost.getUser().getUsername() + ". Thank you for creating an Ad. Your ad is: " + savedPost.getId();
+        Post savedPost = postsDao.save(post);
+        String subject = "New Ad Created: " + savedPost.getTitle();
+        String body = "Dear " + savedPost.getUser().getUsername() + ", Thank you for creating an Ad. Your ad is: " + savedPost.getId();
 
-//        emailService.prepareAndSend(savedPost, subject, body);
-
-        postsDao.save(post);
+        emailService.prepareAndSend(savedPost, subject, body);
         return "redirect:/posts/" + post.getId();
     }
 }

@@ -5,6 +5,7 @@ import com.spring.springblog.model.User;
 import com.spring.springblog.repositories.PostRepository;
 import com.spring.springblog.repositories.UserRepository;
 import com.spring.springblog.services.EmailService;
+import com.spring.springblog.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +19,13 @@ public class PostController {
 
     private final EmailService emailService;
 
-    public PostController(PostRepository postsDao, UserRepository userDao, EmailService emailService){
+    private final UserService userService;
+
+    public PostController(PostRepository postsDao, UserRepository userDao, EmailService emailService, UserService userService){
         this.postsDao = postsDao;
         this.userDao = userDao;
         this.emailService = emailService;
+        this.userService = userService;
     }
 
     @GetMapping("/posts")
@@ -73,7 +77,7 @@ public class PostController {
     @PostMapping("/posts/create")
     public String createPost(@ModelAttribute Post post) {
 
-        User user = userDao.findAll().get(0);
+        User user = userService.loggedInUser();
         post.setUser(user);
 
         Post savedPost = postsDao.save(post);

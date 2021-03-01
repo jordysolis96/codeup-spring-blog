@@ -24,7 +24,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String landingPage() {
-        return "posts/index";
+        return "home";
     }
 
     @GetMapping("/login")

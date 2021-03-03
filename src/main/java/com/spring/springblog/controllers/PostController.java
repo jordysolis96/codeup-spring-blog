@@ -87,4 +87,15 @@ public class PostController {
         emailService.prepareAndSend(savedPost, subject, body);
         return "redirect:/posts/" + post.getId();
     }
+
+    @GetMapping("/posts/profile")
+    public String profileView(Model model) {
+
+        User user = userService.loggedInUser();
+        model.addAttribute("user", user);
+        model.addAttribute("posts", postsDao.findAllByUserId(user.getId()));
+//        Post post = postsDao.getOne(id);
+//        model.addAttribute("post", post);
+        return "posts/profile";
+    }
 }

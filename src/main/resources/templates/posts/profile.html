@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="partials/head :: header-links"></head>
+<body>
+<nav th:replace="partials/navbar_loggedIn :: navbar2"></nav>
+
+<h1>Here is your profile!</h1>
+
+<div th:each="posts : ${posts}">
+    <a th:text="${post.title}"></a>
+    <p th:text="${post.body}"></p>
+</div>
+
+<div th:replace="partials/scripts :: assets"></div>
+</body>
+</html>

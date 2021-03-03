@@ -32,6 +32,8 @@ public class HomeController {
         return "login";
     }
 
+    @PostMapping("/login")
+
     @GetMapping("/sign-up")
     public String showsSignUpForm(Model model){
         model.addAttribute("user", new User());
